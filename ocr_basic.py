@@ -3,7 +3,7 @@ import pytesseract
 import os
 
 # Optional: Set tesseract executable path if not in PATH
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Change if needed
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Change if needed
 
 # Filename to use
 filename = "image.jpg"
