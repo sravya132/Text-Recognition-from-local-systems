@@ -1,25 +1,24 @@
-from PIL import Image, ImageEnhance, ImageFilter
+from flask import Flask, request, jsonify
 import pytesseract
-import os
+from PIL import Image
+import io
 
-# Optional: Set tesseract executable path if not in PATH
-#pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Change if needed
+app = Flask(__name__)
 
-# Filename to use
-filename = "image.jpg"
+@app.route("/")
+def home():
+    return "OCR Service Running on Render!"
 
-# Check file existence before running OCR
-if not os.path.exists(filename):
-    print(f"Error: File '{filename}' not found in project directory.")
-else:
-    # Load and preprocess image
-    img = Image.open(filename)
-    img = img.convert('L')  # Convert to grayscale for better OCR
-    img = img.filter(ImageFilter.MedianFilter())  # Reduce noise
-    img = ImageEnhance.Contrast(img).enhance(2)  # Improve text visibility
+@app.route("/ocr", methods=["POST"])
+def ocr():
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
 
-    # Perform OCR
+    img_file = request.files["file"]
+    img = Image.open(io.BytesIO(img_file.read()))
     text = pytesseract.image_to_string(img)
 
-    print("Extracted Text:")
-    print(text)
+    return jsonify({"text": text})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
