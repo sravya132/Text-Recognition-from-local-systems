@@ -1,1 +1,1 @@
-worker: python ocr_basic.py
+web: gunicorn ocr_basic:app --preload
