@@ -1,4 +1,4 @@
-Flask
-pytesseract
-Pillow
-gunicorn
+Flask==2.3.2
+pillow==12.0.0
+pytesseract==0.3.13
+gunicorn==21.2.0
