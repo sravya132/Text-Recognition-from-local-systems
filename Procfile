@@ -1,1 +1,1 @@
-web: gunicorn ocr_basic:app --preload
+web: gunicorn app:app
