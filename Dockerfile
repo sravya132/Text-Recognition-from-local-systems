@@ -1,7 +1,7 @@
-# Dockerfile
+# Dockerfile (production)
 FROM python:3.11-slim
 
-# Install tesseract and small tooling, then clean apt cache
+# Install tesseract and build deps, then clean apt cache
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       tesseract-ocr \
@@ -19,8 +19,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy app code
 COPY . /app
 
-# Use the PORT Render provides
+# It's okay to not set ENV PORT here; Render will set PORT at runtime.
+# But we keep a default for local testing.
 ENV PORT=10000
 
-# Start command (use sh -c so $PORT is expanded)
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT"]
+# Start with gunicorn and bind to the PORT environment variable provided by Render
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --log-level info"]
