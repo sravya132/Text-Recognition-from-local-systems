@@ -24,4 +24,5 @@ COPY . /app
 ENV PORT=10000
 
 # Start with gunicorn and bind to the PORT environment variable provided by Render
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --log-level info"]
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120 --worker-class gthread --log-level info"]
+
