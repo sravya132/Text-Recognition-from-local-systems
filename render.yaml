@@ -1,8 +1,10 @@
 services:
   - type: web
-    name: text-recognition
+    name: ocr-app
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn ocr_basic:app --preload"
     plan: free
-    region: frankfurt
+    buildCommand: |
+      apt-get update
+      apt-get install -y tesseract-ocr
+      pip install -r requirements.txt
+    startCommand: gunicorn app:app
